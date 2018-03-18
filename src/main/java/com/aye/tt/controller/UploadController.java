@@ -1,6 +1,7 @@
 package com.aye.tt.controller;
 
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.aye.tt.utilities.DatabaseInfo;
 import com.aye.tt.utilities.ReadTeacherCSVUtility;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -32,8 +34,10 @@ public class UploadController {
 
     //Save the uploaded file to this folder
     private static String UPLOADED_FOLDER = "upload";
+    
+    
 
-    MongoClient mongoClient = new MongoClient("localhost" , 27017);
+    MongoClient mongoClient = new MongoClient(DatabaseInfo.host,DatabaseInfo.port);
 
 	//Accessing the database 
 

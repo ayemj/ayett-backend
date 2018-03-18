@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aye.tt.utilities.ConvertListObjToListDoc;
+import com.aye.tt.utilities.DatabaseInfo;
 import com.aye.tt.utilities.TimeConvertUtility;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -34,7 +36,7 @@ import com.mongodb.client.model.Projections;
 @RequestMapping("/edit-adjustments")
 public class EditAdjustmentsController {
 	
-	MongoClient mongoClient = new MongoClient("localhost" , 27017);
+	MongoClient mongoClient = new MongoClient(DatabaseInfo.host,DatabaseInfo.port);
 	//Accessing the database 
 	MongoDatabase database = mongoClient.getDatabase("TimeTable"); 
 	MongoCollection<Document> teacherCollection = database.getCollection("TeacherTimeTable");

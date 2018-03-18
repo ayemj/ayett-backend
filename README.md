@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Spring-Boot-MongoDB-JWT
 [![Build Status](https://travis-ci.org/vlsidlyarevich/Spring-Boot-MongoDB-JWT.svg?branch=master)](https://travis-ci.org/vlsidlyarevich/Spring-Boot-MongoDB-JWT)
 ### Spring Boot base for projects with MongoDB and JWT based security.
@@ -37,3 +38,6 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 } 
 ```
 And some services for [Token creation](https://github.com/vlsidlyarevich/Spring-Boot-MongoDB-JWT/blob/master/src/main/java/com/github/vlsidlyarevich/security/service/impl/TokenServiceImpl.java) and [Token verification](https://github.com/vlsidlyarevich/Spring-Boot-MongoDB-JWT/blob/master/src/main/java/com/github/vlsidlyarevich/security/service/impl/TokenAuthenticationServiceImpl.java). 
+=======
+# ayett-backend
+>>>>>>> 5c9dd85cd84bc5cad0cffd65c5ac70fd55873945

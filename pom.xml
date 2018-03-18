@@ -6,7 +6,7 @@
     <groupId>com.aye.tt</groupId>
     <artifactId>spring-boot-mongodb-jwt</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>Spring-Boot-MongoDB-JWT</name>
     <description>Base for Spring Boot projects with MongoDB and JWT authentication</description>
 
@@ -30,26 +30,6 @@
         <java.version>1.8</java.version>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>test</id>
-            <properties>
-                <neo4j.uri>http://neo4j:test@localhost:7473</neo4j.uri>
-                <skip.test>false</skip.test>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>dev</id>
-            <properties>
-                <neo4j.uri>http://neo4j:unity@localhost:7474</neo4j.uri>
-                <skip.test>true</skip.test>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-    </profiles>
 
     <dependencies>
         <dependency>
@@ -57,9 +37,20 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>

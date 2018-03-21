@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.aye.tt.utilities.DatabaseInfo;
 import com.aye.tt.utilities.ReadTeacherCSVUtility;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -32,9 +33,9 @@ public class UploadController {
     //Save the uploaded file to this folder
     private static String UPLOADED_FOLDER = "upload";
     
-    
+    MongoClientURI mUri = new MongoClientURI(DatabaseInfo.uri);
 
-    MongoClient mongoClient = new MongoClient(DatabaseInfo.host,DatabaseInfo.port);
+    MongoClient mongoClient = new MongoClient(mUri);
 
 	//Accessing the database 
 

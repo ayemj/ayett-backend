@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aye.tt.utilities.DatabaseInfo;
 import com.aye.tt.utilities.ReasonsUtility;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -25,7 +26,9 @@ import com.mongodb.client.model.Projections;
 @RequestMapping("/fetchData")
 public class FetchDataController {
 
-	MongoClient mongoClient = new MongoClient(DatabaseInfo.host,DatabaseInfo.port);
+	MongoClientURI mUri = new MongoClientURI(DatabaseInfo.uri);
+
+    MongoClient mongoClient = new MongoClient(mUri);
 	MongoDatabase database = mongoClient.getDatabase("TimeTable"); 
 	MongoCollection<Document> teacherCollection = database.getCollection("TeacherTimeTable");
 	MongoCollection<Document> metaDataCollection = database.getCollection("MetaData");

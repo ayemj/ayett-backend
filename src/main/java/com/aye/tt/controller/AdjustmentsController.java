@@ -25,6 +25,7 @@ import com.aye.tt.utilities.DatabaseInfo;
 import com.aye.tt.utilities.TimeConvertUtility;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -35,7 +36,9 @@ import com.mongodb.client.model.Projections;
 @RequestMapping("/adjustments")
 public class AdjustmentsController {
 	
-	MongoClient mongoClient = new MongoClient(DatabaseInfo.host,DatabaseInfo.port);
+	MongoClientURI mUri = new MongoClientURI(DatabaseInfo.uri);
+
+    MongoClient mongoClient = new MongoClient(mUri);
 	//Accessing the database 
 	MongoDatabase database = mongoClient.getDatabase("TimeTable"); 
 	MongoCollection<Document> teacherCollection = database.getCollection("TeacherTimeTable");

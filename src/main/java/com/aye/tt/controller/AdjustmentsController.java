@@ -1,6 +1,9 @@
 package com.aye.tt.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -74,7 +77,10 @@ public class AdjustmentsController {
 		
 		List<Document> absentList = (List<Document>)data.get("absentList");
 		Calendar calendar = Calendar.getInstance();
-		int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-2;
+		LocalDateTime date = LocalDateTime.now();
+		ZoneId indiaZoneId = ZoneId.of("Asia/Kolkata");
+		ZonedDateTime indiaZonedDateTime = date.atZone(indiaZoneId);
+		int dayOfWeek = indiaZonedDateTime.getDayOfWeek().getValue() - 1;
 		if(dayOfWeek >5)
 			dayOfWeek = 0;
 		for(Document d:absentList) {
@@ -248,7 +254,7 @@ public class AdjustmentsController {
 		toBeSaved.append("absentList", absentList);
 		toBeSaved.append("exceptionList", exceptionList);
 		toBeSaved.append("username", username);
-		toBeSaved.append("date", LocalDate.now().toString());
+		toBeSaved.append("date", indiaZonedDateTime.toLocalDate().toString());
 		toBeSaved.append("dayOfWeek", dayOfWeek);
 		adjustmentCollection.insertOne(toBeSaved);
 		Document toBeSent = new Document();

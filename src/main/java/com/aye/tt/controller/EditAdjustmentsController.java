@@ -1,6 +1,9 @@
 package com.aye.tt.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -47,7 +50,10 @@ public class EditAdjustmentsController {
 	public Document fetchPreviousAdjustment() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        List<Document> adjustmentList = adjustmentCollection.find(Filters.and(Filters.eq("username",username),Filters.eq("date",LocalDate.now().toString()))).
+        LocalDateTime date = LocalDateTime.now();
+		ZoneId indiaZoneId = ZoneId.of("Asia/Kolkata");
+		ZonedDateTime indiaZonedDateTime = date.atZone(indiaZoneId);
+        List<Document> adjustmentList = adjustmentCollection.find(Filters.and(Filters.eq("username",username),Filters.eq("date",indiaZonedDateTime.toLocalDate().toString()))).
         		projection(Projections.exclude("_id")).into(new ArrayList<Document>());
         if(adjustmentList.size()>0) {
         	Document d1 =  adjustmentList.get(0);
@@ -86,12 +92,14 @@ public class EditAdjustmentsController {
 		List<Document> editAbsentList = ConvertListObjToListDoc.convert(editAbsentListObj);
 		List<Document> addExceptionList = ConvertListObjToListDoc.convert(addExceptionListObj);
 		List<Document> editExceptionList = ConvertListObjToListDoc.convert(editExceptionListObj);
-		Calendar calendar = Calendar.getInstance();
-		int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-2;
+		LocalDateTime date = LocalDateTime.now();
+		ZoneId indiaZoneId = ZoneId.of("Asia/Kolkata");
+		ZonedDateTime indiaZonedDateTime = date.atZone(indiaZoneId);
+		int dayOfWeek = indiaZonedDateTime.getDayOfWeek().getValue() - 1;
 		if(dayOfWeek >5)
 			dayOfWeek = 0;
 		
-		List<Document> adjustmentListDoc = adjustmentCollection.find(Filters.and(Filters.eq("username",username),Filters.eq("date",LocalDate.now().toString()))).
+		List<Document> adjustmentListDoc = adjustmentCollection.find(Filters.and(Filters.eq("username",username),Filters.eq("date",indiaZonedDateTime.toLocalDate().toString()))).
         		into(new ArrayList<Document>());
         if(adjustmentListDoc.size() == 0) {
         	Document toBeSent = new Document();
@@ -302,7 +310,7 @@ public class EditAdjustmentsController {
 		toBeSaved.append("absentList", previousAbsentList);
 		toBeSaved.append("exceptionList", previousExceptionList);
 		toBeSaved.append("username", username);
-		toBeSaved.append("date", LocalDate.now().toString());
+		toBeSaved.append("date", indiaZonedDateTime.toLocalDate().toString());
 		toBeSaved.append("dayOfWeek", dayOfWeek);
 		//adjustmentCollection.insertOne(toBeSaved); //update this instead of insert
 		Bson filter = new Document("_id", toBeSaved.get("_id"));

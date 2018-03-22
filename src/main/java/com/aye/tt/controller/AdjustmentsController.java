@@ -75,7 +75,8 @@ public class AdjustmentsController {
 		List<Document> absentList = (List<Document>)data.get("absentList");
 		Calendar calendar = Calendar.getInstance();
 		int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-2;
-		dayOfWeek = 0;
+		if(dayOfWeek >5)
+			dayOfWeek = 0;
 		for(Document d:absentList) {
 			Document teacherDoc = teacherCollection.find(Filters.eq("_id",new ObjectId((String)d.get("_id")))).into(new ArrayList<Document>()).get(0);
 			List<List<Document>> timeTable = (List<List<Document>>)teacherDoc.get("timeTable");

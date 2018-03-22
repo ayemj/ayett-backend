@@ -127,15 +127,6 @@ public class AdjustmentsController {
 		for(Document d:exceptionList) {
 			Document teacherDoc = teacherCollection.find(Filters.eq("_id",new ObjectId((String)d.get("_id")))).into(new ArrayList<Document>()).get(0);
 			List<List<Document>> timeTable = (List<List<Document>>)teacherDoc.get("timeTable");
-			if(d.getString("reason").equals("Leave") || d.getString("reason").equals("Absent")) {
-				if(d.getString("type").equals("half")) {
-					d.append("startTime", "8:10");
-					d.append("endTime", "11:45");
-				}else if(d.getString("type").equals("full")) {
-					d.append("startTime", ((Document)timeTable.get(dayOfWeek).get(0).get("timeSlot")).getString("startTime"));
-					d.append("endTime", ((Document)timeTable.get(dayOfWeek).get(timeTable.get(dayOfWeek).size()-1).get("timeSlot")).getString("endTime"));
-				}
-			}
 			boolean flag = false;
 			List<Document> lectures = new ArrayList<Document>();
 			for(Document d1:timeTable.get(dayOfWeek)) {

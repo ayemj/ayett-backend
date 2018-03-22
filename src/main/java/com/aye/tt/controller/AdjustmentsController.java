@@ -109,8 +109,8 @@ public class AdjustmentsController {
 				if(TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("endTime")) >= TimeConvertUtility.convertToMillis(d.getString("endTime"))) {  //greater than
 					flag = false;
 				}
-				if(TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("startTime")) <= TimeConvertUtility.convertToMillis(d.getString("endTime"))) {  //greater than
-					flag = true;
+				if(TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("startTime")) >= TimeConvertUtility.convertToMillis(d.getString("endTime"))) {  //greater than
+					flag = false;
 				}
 				if(flag && !(d1.get("class").equals("Free"))) {
 					lectures.add(d1);

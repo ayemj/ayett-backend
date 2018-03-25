@@ -49,7 +49,10 @@ public class ReadTeacherCSVUtility {
 						continue;
 					}else if(dayArray[l].trim().toLowerCase().contains("free")){
 						dayArray[l] = "Free";
+					}else if(dayArray[l].trim().toLowerCase().contains("reserved")){
+						dayArray[l] = "Reserved";
 					}
+					
 					
 					Map<String,String> timeJson = new LinkedHashMap<String,String>();
 					Map<String,Object> lecture =new LinkedHashMap<String,Object>();

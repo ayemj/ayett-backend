@@ -146,7 +146,9 @@ public class EditAdjustmentsController {
 						<= TimeConvertUtility.convertToMillis(d.getString("endTime")) && 
 								TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("endTime")) 
 								>= TimeConvertUtility.convertToMillis(d.getString("startTime")))
-						&& !(d1.get("class").equals("Free"))) {
+						&& !(d1.get("class").equals("Free"))
+						&& !(d1.get("class").equals("Reserved"))
+						) {
 					lectures.add(d1);
 				}
 			}

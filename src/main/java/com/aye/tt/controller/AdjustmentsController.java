@@ -141,7 +141,7 @@ public class AdjustmentsController {
 			boolean flag = false;
 			List<Document> lectures = new ArrayList<Document>();
 			for(Document d1:timeTable.get(dayOfWeek)) {
-				if(TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("startTime")) > TimeConvertUtility.convertToMillis(d.getString("startTime"))) {  // greater than
+				/*if(TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("startTime")) > TimeConvertUtility.convertToMillis(d.getString("startTime"))) {  // greater than
 					flag = true;
 				}
 				if(TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("endTime")) > TimeConvertUtility.convertToMillis(d.getString("endTime"))) {  //greater than
@@ -151,6 +151,13 @@ public class AdjustmentsController {
 					flag = true;
 				}
 				if(flag) {
+					lectures.add(d1);
+				}*/
+				if((TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("startTime")) 
+						<= TimeConvertUtility.convertToMillis(d.getString("endTime")) && 
+								TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("endTime")) 
+								>= TimeConvertUtility.convertToMillis(d.getString("startTime")))
+						&& !(d1.get("class").equals("Free"))) {
 					lectures.add(d1);
 				}
 			}

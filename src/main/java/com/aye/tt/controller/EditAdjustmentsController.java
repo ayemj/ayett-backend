@@ -111,7 +111,6 @@ public class EditAdjustmentsController {
 		List<Document> previousAdjustmentList = (List<Document>)prevAdjustment.get("adjustmentList");
 		List<Document> previousExceptionList = (List<Document>)prevAdjustment.get("exceptionList");
 		List<Document> previousFailedAdjustmentList = (List<Document>)prevAdjustment.get("failedAdjustmentList");
-        System.out.println(editAbsentList.get(0).getClass());
         
 		for(Document d:editExceptionList) {
 			System.out.println("removing from exception list");
@@ -126,6 +125,33 @@ public class EditAdjustmentsController {
 		}
 		
 		for(Document d:addExceptionList) {
+			Document teacherDoc = teacherCollection.find(Filters.eq("_id",new ObjectId((String)d.get("_id")))).into(new ArrayList<Document>()).get(0);
+			List<List<Document>> timeTable = (List<List<Document>>)teacherDoc.get("timeTable");
+			boolean flag = false;
+			List<Document> lectures = new ArrayList<Document>();
+			for(Document d1:timeTable.get(dayOfWeek)) {
+				/*if(TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("startTime")) > TimeConvertUtility.convertToMillis(d.getString("startTime"))) {  // greater than
+					flag = true;
+				}
+				if(TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("endTime")) > TimeConvertUtility.convertToMillis(d.getString("endTime"))) {  //greater than
+					flag = false;
+				}
+				if(TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("startTime")) < TimeConvertUtility.convertToMillis(d.getString("endTime"))) {  //greater than
+					flag = true;
+				}
+				if(flag) {
+					lectures.add(d1);
+				}*/
+				if((TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("startTime")) 
+						<= TimeConvertUtility.convertToMillis(d.getString("endTime")) && 
+								TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("endTime")) 
+								>= TimeConvertUtility.convertToMillis(d.getString("startTime")))
+						&& !(d1.get("class").equals("Free"))) {
+					lectures.add(d1);
+				}
+			}
+			d.append("lectures", lectures);
+			d.append("teacherName", teacherDoc.getString("teacherName"));
 			System.out.println("adding to exception list");
 			previousExceptionList.add(d);
 		}
@@ -183,12 +209,21 @@ public class EditAdjustmentsController {
 			Document teacherDoc = teacherCollection.find(Filters.eq("_id",new ObjectId((String)d.get("_id")))).into(new ArrayList<Document>()).get(0);
 			List<List<Document>> timeTable = (List<List<Document>>)teacherDoc.get("timeTable");
 			if(d.getString("reason").equals("Leave") || d.getString("reason").equals("Absent")) {
-				if(d.getString("type").equals("Half")) {
+				if(d.getString("type").equals("1st Half")) {//change to "
 					d.append("startTime", "08:10");
 					d.append("endTime", "11:45");
-				}else if(d.getString("type").equals("Full")) {
+				}else if(d.getString("type").equals("2nd Half")) {
+					d.append("startTime", "12:20");
+					d.append("endTime", "02:00");
+				}
+				else if(d.getString("type").equals("Full")) {
 					d.append("startTime", ((Document)timeTable.get(dayOfWeek).get(0).get("timeSlot")).getString("startTime"));
 					d.append("endTime", ((Document)timeTable.get(dayOfWeek).get(timeTable.get(dayOfWeek).size()-1).get("timeSlot")).getString("endTime"));
+				}else {
+					Document toBeSent = new Document();
+					toBeSent.append("status", "notDone");
+					toBeSent.append("message", "Invalid Type Valid Values --> 1st Half|2nd Half|Full");
+			        return toBeSent;
 				}
 			}
 			boolean flag = false;

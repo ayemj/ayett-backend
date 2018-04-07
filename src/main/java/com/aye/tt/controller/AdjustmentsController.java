@@ -402,7 +402,7 @@ public class AdjustmentsController {
 								System.out.println("timeStart " + timeStart );
 								System.out.println("timeEnd " + timeEnd );
 								System.out.println("##########################3");
-								if(currentTimeStart < timeStart && currentTimeEnd > timeEnd) {
+								if(currentTimeStart <= timeStart && currentTimeEnd >= timeEnd) {
 									////System.out.println("Matched");
 									lecture.append("teacherId", d.get("_id").toString());
 									lecture.append("teacherName", d.getString("teacherName"));
@@ -413,7 +413,7 @@ public class AdjustmentsController {
 									System.out.println("1Adjusted lecture with no empty space temp!=0 "+lecture);
 									return lecture;
 								}
-								else if(currentTimeStart > timeStart && currentTimeEnd < timeEnd) {
+								else if(currentTimeStart >= timeStart && currentTimeEnd <= timeEnd) {
 									double diff = (currentTimeEnd - currentTimeStart)/(timeEnd - timeStart);
 									if(diff >= temp) {
 										lecture.append("teacherId", d.get("_id").toString());
@@ -427,7 +427,7 @@ public class AdjustmentsController {
 										return lecture;
 									}	
 								}
-								else if(currentTimeStart < timeStart && currentTimeEnd < timeEnd) {
+								else if(currentTimeStart <= timeStart && currentTimeEnd <= timeEnd && currentTimeEnd > timeStart) {
 									double diff = (timeStart - currentTimeEnd)/(timeEnd - timeStart);
 									if(diff >= temp) {
 										lecture.append("teacherId", d.get("_id").toString());
@@ -441,7 +441,7 @@ public class AdjustmentsController {
 										return lecture;
 									}	
 								}
-								else if(currentTimeStart > timeStart && currentTimeEnd > timeEnd) {
+								else if(currentTimeStart >= timeStart && currentTimeEnd >= timeEnd && currentTimeStart < timeEnd) {
 									double diff = (currentTimeStart - timeEnd)/(timeEnd - timeStart);
 									if(diff >= temp) {
 										lecture.append("teacherId", d.get("_id").toString());

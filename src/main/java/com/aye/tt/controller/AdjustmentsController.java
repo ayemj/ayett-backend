@@ -264,13 +264,13 @@ public class AdjustmentsController {
 		
 		HashMap<String, List<Document>> hashMap2 = new HashMap<String, List<Document>>();
 		for(Document d:failedAdjustmentList) {
-			if (!hashMap.containsKey(d.getString("teacherName"))) {
+			if (!hashMap2.containsKey(d.getString("teacherName"))) {
 			    List<Document> list = new ArrayList<Document>();
 			    list.add(d);
 
-			    hashMap.put(d.getString("teacherName"), list);
+			    hashMap2.put(d.getString("teacherName"), list);
 			} else {
-			    hashMap.get(d.getString("teacherName")).add(d);
+			    hashMap2.get(d.getString("teacherName")).add(d);
 			}
 		}
 		

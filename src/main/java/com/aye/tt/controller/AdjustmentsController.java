@@ -194,12 +194,12 @@ public class AdjustmentsController {
 					classLevel = 2;
 				}
 				Document adjustment = null;
-				adjustment = findAdjustment(dayOfWeek,classLevel,lecture,absentList,adjustmentList,exceptionList,0);
+				adjustment = findAdjustment(dayOfWeek,classLevel,lecture,absentList,adjustmentList,exceptionList,0,username);
 				if(adjustment == null) {
-					adjustment = findAdjustment(dayOfWeek,classLevel,lecture,absentList,adjustmentList,exceptionList,0.7);
+					adjustment = findAdjustment(dayOfWeek,classLevel,lecture,absentList,adjustmentList,exceptionList,0.7,username);
 					////System.out.println("Not able to adjustment");
 					if(adjustment == null) {
-						adjustment = findAdjustment(dayOfWeek,classLevel,lecture,absentList,adjustmentList,exceptionList,0.5);
+						adjustment = findAdjustment(dayOfWeek,classLevel,lecture,absentList,adjustmentList,exceptionList,0.5,username);
 						////System.out.println("Not able to adjustment");
 						if(adjustment == null) {
 							//System.out.println("Not able to adjustment");
@@ -261,6 +261,7 @@ public class AdjustmentsController {
 			    hashMap.get(d.getString("teacherName")).add(d);
 			}
 		}
+		
 		Document toBeSaved = new Document();
 		toBeSaved.append("adjustmentList", adjustmentList);
 		toBeSaved.append("failedAdjustmentList", failedAdjustmentList);
@@ -294,7 +295,7 @@ public class AdjustmentsController {
 	}
 
 	private Document findAdjustment(int dayOfWeek, int classLevel, Document lecture, 
-			List<Document> absentList, List<Document> adjustments, List<Document> exceptionList, double temp) {
+			List<Document> absentList, List<Document> adjustments, List<Document> exceptionList, double temp, String username) {
 		System.out.println("000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 		System.out.println("To be adjusted time slot " + (Document)lecture.get("timeSlot"));
 		
@@ -322,7 +323,7 @@ public class AdjustmentsController {
 		for(int i=0;i<2;i++)
 		{
 			//System.out.println("TimeSlot" + timeSlot);
-			List<Document> teacherDataList = teacherCollection.find(Filters.eq("classLevel",resultLevel[i])).sort(new BasicDBObject("adjustmentCount",1)).into(new ArrayList<Document>());
+			List<Document> teacherDataList = teacherCollection.find(Filters.and(Filters.eq("username",username),Filters.eq("classLevel",resultLevel[i]))).sort(new BasicDBObject("adjustmentCount",1)).into(new ArrayList<Document>());
 			//List<Document> teacherDataList = teacherCollection.find().sort(new BasicDBObject("adjustmentCount",1)).into(new ArrayList<Document>());
 			//System.out.println("TeacherDataList" + teacherDataList.size());
 			for(Document teacher : adjustments) {

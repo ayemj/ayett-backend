@@ -107,8 +107,8 @@ public class AdjustmentsController {
 			boolean flag = false;
 			List<Document> lectures = new ArrayList<Document>();
 			for(Document d1:timeTable.get(dayOfWeek)) {
-				System.out.println(((Document)d1.get("timeSlot")).getString("startTime"));
-				System.out.println(d.getString("startTime"));
+				//System.out.println(((Document)d1.get("timeSlot")).getString("startTime"));
+				//System.out.println(d.getString("startTime"));
 				/*if(TimeConvertUtility.convertToMillis(((Document)d1.get("timeSlot")).getString("startTime")) >= TimeConvertUtility.convertToMillis(d.getString("startTime"))) {  // greater than
 					flag = true;
 				}
@@ -126,7 +126,7 @@ public class AdjustmentsController {
 					lectures.add(d1);
 				}
 			}
-			System.out.println("Lecturessss :"  + lectures);
+			//System.out.println("Lecturessss :"  + lectures);
 			d.append("lectures", lectures);
 			d.append("teacherName", teacherDoc.getString("teacherName"));
 		}
@@ -195,12 +195,12 @@ public class AdjustmentsController {
 				adjustment = findAdjustment(dayOfWeek,classLevel,lecture,absentList,adjustmentList,exceptionList,0);
 				if(adjustment == null) {
 					adjustment = findAdjustment(dayOfWeek,classLevel,lecture,absentList,adjustmentList,exceptionList,0.7);
-					//System.out.println("Not able to adjustment");
+					////System.out.println("Not able to adjustment");
 					if(adjustment == null) {
 						adjustment = findAdjustment(dayOfWeek,classLevel,lecture,absentList,adjustmentList,exceptionList,0.5);
-						//System.out.println("Not able to adjustment");
+						////System.out.println("Not able to adjustment");
 						if(adjustment == null) {
-							System.out.println("Not able to adjustment");
+							//System.out.println("Not able to adjustment");
 							Document failedAdjustment = new Document();
 							failedAdjustment.append("_id", d.getString("_id"));
 							failedAdjustment.append("teacherName", d.getString("teacherName"));
@@ -229,7 +229,7 @@ public class AdjustmentsController {
 					adjustment.append("previousTeacherName", d.getString("teacherName"));
 					adjustmentList.add(adjustment);
 				}
-				System.out.println(Arrays.toString(adjustmentList.toArray()));
+				//System.out.println(Arrays.toString(adjustmentList.toArray()));
 				//if adjustment not in adjustmentList && teacher not absent List && teacher not in exception list
 				//then add it to adjustment List
 				//if adjustment == null adjustment not possible
@@ -239,7 +239,7 @@ public class AdjustmentsController {
 
 		//    		Document teacherDoc = teacherCollection.find(Filters.eq("_id",new ObjectId((String)data.get("_id")))).into(new ArrayList<Document>()).get(0);
 		//    		List<List<Document>> timeTable = (List<List<Document>>)teacherDoc.get("timetable");
-		//    		System.out.println(timeTable);
+		//    		//System.out.println(timeTable);
 		//    		String toBeSent = ((Document)timeTable
 		//    				.get(0)
 		//    				.get(0)
@@ -285,7 +285,7 @@ public class AdjustmentsController {
 		Bson filter = new Document("_id", teacher.get("_id"));
 		teacher.remove("_id");
 		Bson updateOperationDocument = new Document("$set", teacher);
-		System.out.println(teacherCollection.updateOne(filter, updateOperationDocument).getModifiedCount());
+		//System.out.println(teacherCollection.updateOne(filter, updateOperationDocument).getModifiedCount());
 		
 		return true;
 		
@@ -293,12 +293,15 @@ public class AdjustmentsController {
 
 	private Document findAdjustment(int dayOfWeek, int classLevel, Document lecture, 
 			List<Document> absentList, List<Document> adjustments, List<Document> exceptionList, double temp) {
+		System.out.println("000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+		System.out.println("To be adjusted time slot " + (Document)lecture.get("timeSlot"));
+		
 		// TODO Auto-generated method stub
-		//		System.out.println("DayOFWeek" + dayOfWeek);
-		//		System.out.println("lecture" + lecture);
-		//		System.out.println("absentList" + absentList.size());
-		//		System.out.println("adjustments" + adjustments.size());
-		//		System.out.println("exceptionList" + exceptionList.size());
+		//		//System.out.println("DayOFWeek" + dayOfWeek);
+		//		//System.out.println("lecture" + lecture);
+		//		//System.out.println("absentList" + absentList.size());
+		//		//System.out.println("adjustments" + adjustments.size());
+		//		//System.out.println("exceptionList" + exceptionList.size());
 		int[] zeroLevel = {0,1,2};
 		int[] oneLevel = {1,2,0};
 		int[] twoLevel = {2,1,0};
@@ -316,10 +319,10 @@ public class AdjustmentsController {
 		Document timeSlot = (Document)lecture.get("timeSlot");
 		for(int i=0;i<2;i++)
 		{
-			System.out.println("TimeSlot" + timeSlot);
+			//System.out.println("TimeSlot" + timeSlot);
 			List<Document> teacherDataList = teacherCollection.find(Filters.eq("classLevel",resultLevel[i])).sort(new BasicDBObject("adjustmentCount",1)).into(new ArrayList<Document>());
 			//List<Document> teacherDataList = teacherCollection.find().sort(new BasicDBObject("adjustmentCount",1)).into(new ArrayList<Document>());
-			System.out.println("TeacherDataList" + teacherDataList.size());
+			//System.out.println("TeacherDataList" + teacherDataList.size());
 			for(Document teacher : adjustments) {
 				Optional<Document> t1 =  teacherDataList.stream().filter(o -> o.get("_id").toString().equals(teacher.getString("_id"))).findFirst();
 				if(t1.isPresent()) {
@@ -331,10 +334,10 @@ public class AdjustmentsController {
 
 			for(Document d : teacherDataList) {
 				if(!absentList.stream().filter(o -> o.getString("_id").equals(d.get("_id").toString())).findFirst().isPresent()) {
-					//System.out.println("IFAbsentList");
+					////System.out.println("IFAbsentList");
 					for(Document currentLecture:((List<List<Document>>)d.get("timeTable")).get(dayOfWeek)) {
 						Document currentTimeSlot = (Document)currentLecture.get("timeSlot");
-						//System.out.println("CurrentLecture" + currentLecture);
+						////System.out.println("CurrentLecture" + currentLecture);
 						if(!exceptionList.stream().filter(o -> (o.getString("_id").equals(d.get("_id").toString()) && 
 								((TimeConvertUtility.convertToMillis(o.getString("startTime")) <= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) &&
 										TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) <= TimeConvertUtility.convertToMillis(o.getString("endTime"))) ||
@@ -354,13 +357,13 @@ public class AdjustmentsController {
 														TimeConvertUtility.convertToMillis(((Document)o.get("timeSlot")).getString("endTime")) <= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime"))))
 										)
 										).findFirst().isPresent()) {   // 1. greater than   2. less than 3. greater 4. less 5.greater 6. less
-							//System.out.println("end");
-							//System.out.println("CurrentTimeSlot" + currentTimeSlot);
-							//System.out.println("TimeSlot" + timeSlot);
-							//							System.out.println(TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) +"--"+ (TimeConvertUtility.convertToMillis(timeSlot.getString("startTime"))));
-							//							System.out.println(TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) +"---"+ (TimeConvertUtility.convertToMillis(timeSlot.getString("endTime"))));
-							//							System.out.println(currentLecture.getString("class").equals("Free"));
-							//							System.out.println("CurrentLEcture" + currentLecture);
+							////System.out.println("end");
+							////System.out.println("CurrentTimeSlot" + currentTimeSlot);
+							////System.out.println("TimeSlot" + timeSlot);
+							//							//System.out.println(TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) +"--"+ (TimeConvertUtility.convertToMillis(timeSlot.getString("startTime"))));
+							//							//System.out.println(TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) +"---"+ (TimeConvertUtility.convertToMillis(timeSlot.getString("endTime"))));
+							//							//System.out.println(currentLecture.getString("class").equals("Free"));
+							//							//System.out.println("CurrentLEcture" + currentLecture);
 
 							// if temp = 0
 							if(temp == 0) {
@@ -370,13 +373,14 @@ public class AdjustmentsController {
 										TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")).longValue() == 
 										(TimeConvertUtility.convertToMillis(timeSlot.getString("endTime")).longValue()) && 
 										currentLecture.getString("class").equals("Free")) {
-									System.out.println("Matched");
+									//System.out.println("Matched");
 									lecture.append("teacherId", d.get("_id").toString());
 									lecture.append("teacherName", d.getString("teacherName"));
 									lecture.append("startTime", timeSlot.getString("startTime"));
 									lecture.append("endTime", timeSlot.getString("endTime"));
 									lecture.append("percentage", 100);
-									System.out.println("Current Lecture" + lecture);
+									//System.out.println("Current Lecture" + lecture);
+									System.out.println("Adjusted lecture with no empty space "+lecture);
 									return lecture;
 								}
 							}
@@ -387,13 +391,14 @@ public class AdjustmentsController {
 								long timeStart =TimeConvertUtility.convertToMillis(timeSlot.getString("startTime")).longValue();
 								long timeEnd = TimeConvertUtility.convertToMillis(timeSlot.getString("endTime")).longValue();
 								if(currentTimeStart < timeStart && currentTimeEnd > timeEnd) {
-									//System.out.println("Matched");
+									////System.out.println("Matched");
 									lecture.append("teacherId", d.get("_id").toString());
 									lecture.append("teacherName", d.getString("teacherName"));
 									lecture.append("startTime", timeSlot.getString("startTime"));
 									lecture.append("endTime", timeSlot.getString("endTime"));
 									lecture.append("percentage", 100);
-									System.out.println("<  && >");
+									////System.out.println("<  && >");
+									System.out.println("Adjusted lecture with no empty space temp!=0 "+lecture);
 									return lecture;
 								}
 								else if(currentTimeStart > timeStart && currentTimeEnd < timeEnd) {
@@ -404,8 +409,9 @@ public class AdjustmentsController {
 										lecture.append("startTime", currentTimeSlot.getString("startTime"));
 										lecture.append("endTime", currentTimeSlot.getString("endTime"));
 										lecture.append("percentage", temp*100);
-										//System.out.println("Current Lecture" + lecture);
-										System.out.println(">  && <");
+										////System.out.println("Current Lecture" + lecture);
+										//System.out.println(">  && <");
+										System.out.println("Adjusted lecture with "+(100-temp*100)+" empty space temp!=0 "+lecture);
 										return lecture;
 									}	
 								}
@@ -417,8 +423,9 @@ public class AdjustmentsController {
 										lecture.append("startTime", timeSlot.getString("startTime"));
 										lecture.append("endTime", currentTimeSlot.getString("endTime"));
 										lecture.append("percentage", temp*100);
-										//System.out.println("Current Lecture" + lecture);
-										System.out.println("<  && <");
+										////System.out.println("Current Lecture" + lecture);
+										//System.out.println("<  && <");
+										System.out.println("Adjusted lecture with "+(100-temp*100)+" empty space temp!=0 "+lecture);
 										return lecture;
 									}	
 								}
@@ -430,8 +437,9 @@ public class AdjustmentsController {
 										lecture.append("startTime", currentTimeSlot.getString("startTime"));
 										lecture.append("endTime", timeSlot.getString("endTime"));
 										lecture.append("percentage", temp*100);
-										//System.out.println("Current Lecture" + lecture);
-										System.out.println(">  && >");
+										////System.out.println("Current Lecture" + lecture);
+										//System.out.println(">  && >");
+										System.out.println("Adjusted lecture with "+(100-temp*100)+" empty space temp!=0 "+lecture);
 										return lecture;
 									}	
 								}

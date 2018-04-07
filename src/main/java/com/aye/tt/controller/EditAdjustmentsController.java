@@ -408,105 +408,107 @@ public class EditAdjustmentsController {
 				if(!absentList.stream().filter(o -> o.getString("_id").equals(d.get("_id").toString())).findFirst().isPresent()) {
 					//System.out.println("IFAbsentList");
 					for(Document currentLecture:((List<List<Document>>)d.get("timeTable")).get(dayOfWeek)) {
-						Document currentTimeSlot = (Document)currentLecture.get("timeSlot");
-						//System.out.println("CurrentLecture" + currentLecture);
-						if(!exceptionList.stream().filter(o -> (o.getString("_id").equals(d.get("_id").toString()) && 
-								((TimeConvertUtility.convertToMillis(o.getString("startTime")) <= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) &&
-										TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) <= TimeConvertUtility.convertToMillis(o.getString("endTime"))) ||
-										(TimeConvertUtility.convertToMillis(o.getString("startTime")) >= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) &&
-												TimeConvertUtility.convertToMillis(o.getString("endTime")) <= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) &&
-												TimeConvertUtility.convertToMillis(o.getString("startTime")) >= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) && 
-												TimeConvertUtility.convertToMillis(o.getString("endTime")) <= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime"))))
-								)
-								).findFirst().isPresent()
-								&& 
-								!adjustments.stream().filter(o -> (o.getString("teacherId").equals(d.get("_id").toString()) && 
-										((TimeConvertUtility.convertToMillis(o.getString("startTime")) 
-												<= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) &&
-												TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) 
-												<= TimeConvertUtility.convertToMillis(o.getString("endTime"))) )
-										)
-										).findFirst().isPresent()) {   // 1. greater than   2. less than 3. greater 4. less 5.greater 6. less
-							//System.out.println("end");
-							//System.out.println("CurrentTimeSlot" + currentTimeSlot);
-							//System.out.println("TimeSlot" + timeSlot);
-							//							System.out.println(TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) +"--"+ (TimeConvertUtility.convertToMillis(timeSlot.getString("startTime"))));
-							//							System.out.println(TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) +"---"+ (TimeConvertUtility.convertToMillis(timeSlot.getString("endTime"))));
-							//							System.out.println(currentLecture.getString("class").equals("Free"));
-							//							System.out.println("CurrentLEcture" + currentLecture);
-
-							// if temp = 0
-							if(temp == 0) {
-							if(TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")).longValue() 		== 
-									(TimeConvertUtility.convertToMillis(timeSlot.getString("startTime")).longValue()) 
+						if(currentLecture.getString("class").equals("Free")) {
+							Document currentTimeSlot = (Document)currentLecture.get("timeSlot");
+							//System.out.println("CurrentLecture" + currentLecture);
+							if(!exceptionList.stream().filter(o -> (o.getString("_id").equals(d.get("_id").toString()) && 
+									((TimeConvertUtility.convertToMillis(o.getString("startTime")) <= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) &&
+											TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) <= TimeConvertUtility.convertToMillis(o.getString("endTime"))) ||
+											(TimeConvertUtility.convertToMillis(o.getString("startTime")) >= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) &&
+													TimeConvertUtility.convertToMillis(o.getString("endTime")) <= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) &&
+													TimeConvertUtility.convertToMillis(o.getString("startTime")) >= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) && 
+													TimeConvertUtility.convertToMillis(o.getString("endTime")) <= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime"))))
+									)
+									).findFirst().isPresent()
 									&& 
-									TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")).longValue() == 
-									(TimeConvertUtility.convertToMillis(timeSlot.getString("endTime")).longValue()) && 
-									currentLecture.getString("class").equals("Free")) {
-								System.out.println("Matched");
-								lecture.append("teacherId", d.get("_id").toString());
-								lecture.append("teacherName", d.getString("teacherName"));
-								lecture.append("startTime", timeSlot.getString("startTime"));
-								lecture.append("endTime", timeSlot.getString("endTime"));
-								lecture.append("percentage", 100);
-								System.out.println("Current Lecture" + lecture);
-								return lecture;
-							}
-							}
-							// temp = 1
-							else {
-								long currentTimeStart =TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")).longValue();
-								long currentTimeEnd = TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")).longValue();
-								long timeStart =TimeConvertUtility.convertToMillis(timeSlot.getString("startTime")).longValue();
-								long timeEnd = TimeConvertUtility.convertToMillis(timeSlot.getString("endTime")).longValue();
-								if(currentTimeStart < timeStart && currentTimeEnd > timeEnd) {
-									//System.out.println("Matched");
+									!adjustments.stream().filter(o -> (o.getString("teacherId").equals(d.get("_id").toString()) && 
+											((TimeConvertUtility.convertToMillis(o.getString("startTime")) 
+													<= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) &&
+													TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) 
+													<= TimeConvertUtility.convertToMillis(o.getString("endTime"))) )
+											)
+											).findFirst().isPresent()) {   // 1. greater than   2. less than 3. greater 4. less 5.greater 6. less
+								//System.out.println("end");
+								//System.out.println("CurrentTimeSlot" + currentTimeSlot);
+								//System.out.println("TimeSlot" + timeSlot);
+								//							System.out.println(TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")) +"--"+ (TimeConvertUtility.convertToMillis(timeSlot.getString("startTime"))));
+								//							System.out.println(TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) +"---"+ (TimeConvertUtility.convertToMillis(timeSlot.getString("endTime"))));
+								//							System.out.println(currentLecture.getString("class").equals("Free"));
+								//							System.out.println("CurrentLEcture" + currentLecture);
+	
+								// if temp = 0
+								if(temp == 0) {
+								if(TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")).longValue() 		== 
+										(TimeConvertUtility.convertToMillis(timeSlot.getString("startTime")).longValue()) 
+										&& 
+										TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")).longValue() == 
+										(TimeConvertUtility.convertToMillis(timeSlot.getString("endTime")).longValue()) && 
+										currentLecture.getString("class").equals("Free")) {
+									System.out.println("Matched");
 									lecture.append("teacherId", d.get("_id").toString());
 									lecture.append("teacherName", d.getString("teacherName"));
 									lecture.append("startTime", timeSlot.getString("startTime"));
 									lecture.append("endTime", timeSlot.getString("endTime"));
 									lecture.append("percentage", 100);
-									System.out.println("<  && >");
+									System.out.println("Current Lecture" + lecture);
 									return lecture;
 								}
-								else if(currentTimeStart > timeStart && currentTimeEnd < timeEnd) {
-									double diff = (currentTimeEnd - currentTimeStart)/(timeEnd - timeStart);
-									if(diff >= temp) {
-										lecture.append("teacherId", d.get("_id").toString());
-										lecture.append("teacherName", d.getString("teacherName"));
-										lecture.append("startTime", timeSlot.getString("startTime"));
-										lecture.append("endTime", timeSlot.getString("endTime"));
-										lecture.append("percentage", temp*100);
-										//System.out.println("Current Lecture" + lecture);
-										System.out.println(">  && <");
-										return lecture;
-									}	
 								}
-								else if(currentTimeStart < timeStart && currentTimeEnd < timeEnd) {
-									double diff = (timeStart - currentTimeEnd)/(timeEnd - timeStart);
-									if(diff >= temp) {
+								// temp = 1
+								else {
+									long currentTimeStart =TimeConvertUtility.convertToMillis(currentTimeSlot.getString("startTime")).longValue();
+									long currentTimeEnd = TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")).longValue();
+									long timeStart =TimeConvertUtility.convertToMillis(timeSlot.getString("startTime")).longValue();
+									long timeEnd = TimeConvertUtility.convertToMillis(timeSlot.getString("endTime")).longValue();
+									if(currentTimeStart < timeStart && currentTimeEnd > timeEnd) {
+										//System.out.println("Matched");
 										lecture.append("teacherId", d.get("_id").toString());
 										lecture.append("teacherName", d.getString("teacherName"));
 										lecture.append("startTime", timeSlot.getString("startTime"));
 										lecture.append("endTime", timeSlot.getString("endTime"));
-										lecture.append("percentage", temp*100);
-										//System.out.println("Current Lecture" + lecture);
-										System.out.println("<  && <");
+										lecture.append("percentage", 100);
+										System.out.println("<  && >");
 										return lecture;
-									}	
-								}
-								else if(currentTimeStart > timeStart && currentTimeEnd > timeEnd) {
-									double diff = (currentTimeStart - timeEnd)/(timeEnd - timeStart);
-									if(diff >= temp) {
-										lecture.append("teacherId", d.get("_id").toString());
-										lecture.append("teacherName", d.getString("teacherName"));
-										lecture.append("startTime", timeSlot.getString("startTime"));
-										lecture.append("endTime", timeSlot.getString("endTime"));
-										lecture.append("percentage", temp*100);
-										//System.out.println("Current Lecture" + lecture);
-										System.out.println(">  && >");
-										return lecture;
-									}	
+									}
+									else if(currentTimeStart > timeStart && currentTimeEnd < timeEnd) {
+										double diff = (currentTimeEnd - currentTimeStart)/(timeEnd - timeStart);
+										if(diff >= temp) {
+											lecture.append("teacherId", d.get("_id").toString());
+											lecture.append("teacherName", d.getString("teacherName"));
+											lecture.append("startTime", timeSlot.getString("startTime"));
+											lecture.append("endTime", timeSlot.getString("endTime"));
+											lecture.append("percentage", temp*100);
+											//System.out.println("Current Lecture" + lecture);
+											System.out.println(">  && <");
+											return lecture;
+										}	
+									}
+									else if(currentTimeStart < timeStart && currentTimeEnd < timeEnd) {
+										double diff = (timeStart - currentTimeEnd)/(timeEnd - timeStart);
+										if(diff >= temp) {
+											lecture.append("teacherId", d.get("_id").toString());
+											lecture.append("teacherName", d.getString("teacherName"));
+											lecture.append("startTime", timeSlot.getString("startTime"));
+											lecture.append("endTime", timeSlot.getString("endTime"));
+											lecture.append("percentage", temp*100);
+											//System.out.println("Current Lecture" + lecture);
+											System.out.println("<  && <");
+											return lecture;
+										}	
+									}
+									else if(currentTimeStart > timeStart && currentTimeEnd > timeEnd) {
+										double diff = (currentTimeStart - timeEnd)/(timeEnd - timeStart);
+										if(diff >= temp) {
+											lecture.append("teacherId", d.get("_id").toString());
+											lecture.append("teacherName", d.getString("teacherName"));
+											lecture.append("startTime", timeSlot.getString("startTime"));
+											lecture.append("endTime", timeSlot.getString("endTime"));
+											lecture.append("percentage", temp*100);
+											//System.out.println("Current Lecture" + lecture);
+											System.out.println(">  && >");
+											return lecture;
+										}	
+									}
 								}
 							}
 						}

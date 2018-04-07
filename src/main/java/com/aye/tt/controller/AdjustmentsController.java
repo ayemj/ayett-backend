@@ -402,7 +402,7 @@ public class AdjustmentsController {
 									lecture.append("endTime", timeSlot.getString("endTime"));
 									lecture.append("percentage", 100);
 									////System.out.println("<  && >");
-									System.out.println("Adjusted lecture with no empty space temp!=0 "+lecture);
+									System.out.println("1Adjusted lecture with no empty space temp!=0 "+lecture);
 									return lecture;
 								}
 								else if(currentTimeStart > timeStart && currentTimeEnd < timeEnd) {
@@ -415,7 +415,7 @@ public class AdjustmentsController {
 										lecture.append("percentage", temp*100);
 										////System.out.println("Current Lecture" + lecture);
 										//System.out.println(">  && <");
-										System.out.println("Adjusted lecture with "+(100-temp*100)+" empty space temp!=0 "+lecture);
+										System.out.println("2Adjusted lecture with "+(100-temp*100)+" empty space temp!=0 "+lecture);
 										return lecture;
 									}	
 								}
@@ -429,7 +429,7 @@ public class AdjustmentsController {
 										lecture.append("percentage", temp*100);
 										////System.out.println("Current Lecture" + lecture);
 										//System.out.println("<  && <");
-										System.out.println("Adjusted lecture with "+(100-temp*100)+" empty space temp!=0 "+lecture);
+										System.out.println("3Adjusted lecture with "+(100-temp*100)+" empty space temp!=0 "+lecture);
 										return lecture;
 									}	
 								}
@@ -443,7 +443,7 @@ public class AdjustmentsController {
 										lecture.append("percentage", temp*100);
 										////System.out.println("Current Lecture" + lecture);
 										//System.out.println(">  && >");
-										System.out.println("Adjusted lecture with "+(100-temp*100)+" empty space temp!=0 "+lecture);
+										System.out.println("4Adjusted lecture with "+(100-temp*100)+" empty space temp!=0 "+lecture);
 										return lecture;
 									}	
 								}

@@ -394,6 +394,14 @@ public class AdjustmentsController {
 								long currentTimeEnd = TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")).longValue();
 								long timeStart =TimeConvertUtility.convertToMillis(timeSlot.getString("startTime")).longValue();
 								long timeEnd = TimeConvertUtility.convertToMillis(timeSlot.getString("endTime")).longValue();
+								System.out.println("##########################3");
+								System.out.println("currentTimeSlot " + currentTimeSlot );
+								System.out.println("timeSlot " + timeSlot );
+								System.out.println("currentTimeStart " + currentTimeStart );
+								System.out.println("currentTimeEnd " + currentTimeEnd );
+								System.out.println("timeStart " + timeStart );
+								System.out.println("timeEnd " + timeEnd );
+								System.out.println("##########################3");
 								if(currentTimeStart < timeStart && currentTimeEnd > timeEnd) {
 									////System.out.println("Matched");
 									lecture.append("teacherId", d.get("_id").toString());

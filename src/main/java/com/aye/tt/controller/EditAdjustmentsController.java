@@ -296,7 +296,7 @@ public class EditAdjustmentsController {
 						adjustment = findAdjustment(dayOfWeek,classLevel,lecture,previousAbsentList,adjustmentList,previousExceptionList,0.5);
 						//System.out.println("Not able to adjustment");
 						if(adjustment == null) {
-							System.out.println("Not able to adjustment");
+							System.out.println("Not able to add adjustment");
 							Document failedAdjustment = new Document();
 							failedAdjustment.append("_id", d.getString("_id"));
 							failedAdjustment.append("teacherName", d.getString("teacherName"));

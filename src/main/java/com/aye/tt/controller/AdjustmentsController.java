@@ -340,6 +340,7 @@ public class AdjustmentsController {
 					////System.out.println("IFAbsentList");
 					for(Document currentLecture:((List<List<Document>>)d.get("timeTable")).get(dayOfWeek)) {
 						Document currentTimeSlot = (Document)currentLecture.get("timeSlot");
+						System.out.println(currentTimeSlot);
 						////System.out.println("CurrentLecture" + currentLecture);
 						if(!exceptionList.stream().filter(o -> (o.getString("_id").equals(d.get("_id").toString()) && 
 								((TimeConvertUtility.convertToMillis(o.getString("startTime")) <= TimeConvertUtility.convertToMillis(currentTimeSlot.getString("endTime")) &&

@@ -262,6 +262,18 @@ public class AdjustmentsController {
 			}
 		}
 		
+		HashMap<String, List<Document>> hashMap2 = new HashMap<String, List<Document>>();
+		for(Document d:failedAdjustmentList) {
+			if (!hashMap.containsKey(d.getString("teacherName"))) {
+			    List<Document> list = new ArrayList<Document>();
+			    list.add(d);
+
+			    hashMap.put(d.getString("teacherName"), list);
+			} else {
+			    hashMap.get(d.getString("teacherName")).add(d);
+			}
+		}
+		
 		Document toBeSaved = new Document();
 		toBeSaved.append("adjustmentList", adjustmentList);
 		toBeSaved.append("failedAdjustmentList", failedAdjustmentList);
@@ -273,7 +285,7 @@ public class AdjustmentsController {
 		adjustmentCollection.insertOne(toBeSaved);
 		Document toBeSent = new Document();
 		toBeSent.append("adjustmentList", hashMap);
-		toBeSent.append("failedAdjustmentList", failedAdjustmentList);
+		toBeSent.append("failedAdjustmentList", hashMap2);
 		return toBeSent;
 	}
 

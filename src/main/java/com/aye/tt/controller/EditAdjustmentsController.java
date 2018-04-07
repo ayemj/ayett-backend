@@ -70,6 +70,19 @@ public class EditAdjustmentsController {
     			}
     		}
     		d1.append("adjustmentList", hashMap);
+    		List<Document> failedAdjustmentList = (List<Document>)d1.get("failedAdjustmentList");
+    		HashMap<String, List<Document>> hashMap2 = new HashMap<String, List<Document>>();
+    		for(Document d:failedAdjustmentList) {
+    			if (!hashMap2.containsKey(d.getString("teacherName"))) {
+    			    List<Document> list = new ArrayList<Document>();
+    			    list.add(d);
+
+    			    hashMap2.put(d.getString("teacherName"), list);
+    			} else {
+    			    hashMap2.get(d.getString("teacherName")).add(d);
+    			}
+    		}
+    		d1.append("failedAdjustmentList", hashMap2);
         	return d1;
         }
         else {

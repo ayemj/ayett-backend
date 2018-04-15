@@ -496,8 +496,8 @@ public class EditAdjustmentsController {
 										return lecture;
 									}
 									else if(currentTimeStart > timeStart && currentTimeEnd < timeEnd) {
-										double diff = (currentTimeEnd - currentTimeStart)/(timeEnd - timeStart);
-										if(diff >= temp) {
+										double diff = (double)(currentTimeEnd - currentTimeStart)/(double)(timeEnd - timeStart);
+										if(Math.abs(diff) >= temp) {
 											lecture.append("teacherId", d.get("_id").toString());
 											lecture.append("teacherName", d.getString("teacherName"));
 											lecture.append("startTime", timeSlot.getString("startTime"));
@@ -509,8 +509,8 @@ public class EditAdjustmentsController {
 										}	
 									}
 									else if(currentTimeStart < timeStart && currentTimeEnd < timeEnd) {
-										double diff = (timeStart - currentTimeEnd)/(timeEnd - timeStart);
-										if(diff >= temp) {
+										double diff = (double)(currentTimeEnd - timeStart)/(double)(timeEnd - timeStart);
+										if(Math.abs(diff) >= temp) {
 											lecture.append("teacherId", d.get("_id").toString());
 											lecture.append("teacherName", d.getString("teacherName"));
 											lecture.append("startTime", timeSlot.getString("startTime"));
@@ -522,8 +522,8 @@ public class EditAdjustmentsController {
 										}	
 									}
 									else if(currentTimeStart > timeStart && currentTimeEnd > timeEnd) {
-										double diff = (currentTimeStart - timeEnd)/(timeEnd - timeStart);
-										if(diff >= temp) {
+										double diff = (double)(currentTimeStart - timeEnd)/(double)(timeEnd - timeStart);
+										if(Math.abs(diff) >= temp) {
 											lecture.append("teacherId", d.get("_id").toString());
 											lecture.append("teacherName", d.getString("teacherName"));
 											lecture.append("startTime", timeSlot.getString("startTime"));

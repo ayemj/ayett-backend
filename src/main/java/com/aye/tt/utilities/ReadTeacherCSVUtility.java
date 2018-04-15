@@ -90,7 +90,7 @@ public class ReadTeacherCSVUtility {
 
 			}
 
-			if((Arrays.stream(timeArray).filter( o -> !(o.equals("") && o.equals('\r')) ).collect( Collectors.toList() )).size()==6){
+			if((Arrays.stream(timeArray).filter( o -> !(o.equals("") || o.equals("\r")) ).collect( Collectors.toList() )).size()==8){
 				teacherJson.put("classLevel",2);
 
 			}
